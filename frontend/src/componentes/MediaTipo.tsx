@@ -8,7 +8,14 @@ const FONDO: Record<TipoCriatura, string> = {
   mitica: "from-emerald-700 via-emerald-900 to-emerald-950",
   elemental: "from-orange-700 via-orange-900 to-emerald-950",
   mecanica: "from-stone-600 via-zinc-800 to-zinc-950",
-  espectral: "from-teal-500 via-teal-900 to-emerald-950",
+  espectral: "from-violet-500 via-purple-800 to-purple-950",
+};
+
+const VELO: Record<TipoCriatura, string> = {
+  mitica: "from-emerald-950/80",
+  elemental: "from-emerald-950/80",
+  mecanica: "from-zinc-950/80",
+  espectral: "from-purple-950/80",
 };
 
 function Emblema({ tipo }: { tipo: TipoCriatura }) {
@@ -24,8 +31,9 @@ function Emblema({ tipo }: { tipo: TipoCriatura }) {
     case "elemental":
       return (
         <g {...trazo}>
-          <path d="M100 26 C140 76 158 100 158 128 A58 58 0 0 1 42 128 C42 100 66 82 100 26 Z" />
-          <path d="M100 82 C120 108 128 120 128 136 A28 28 0 0 1 72 136 C72 120 84 110 100 82 Z" />
+          <polygon points="100,30 170,100 100,170 30,100" />
+          <polygon points="100,58 142,100 100,142 58,100" />
+          <circle cx="100" cy="100" r="12" />
         </g>
       );
     case "mecanica":
@@ -63,7 +71,7 @@ export function MediaTipo({ tipo, nombre }: { tipo: TipoCriatura; nombre: string
       <span className="texto-contorno absolute -bottom-6 -right-2 select-none font-display text-[9rem] font-black leading-none" aria-hidden="true">
         {nombre.charAt(0).toUpperCase()}
       </span>
-      <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent" />
+      <div className={`absolute inset-0 bg-gradient-to-t ${VELO[tipo]} via-transparent to-transparent`} />
     </div>
   );
 }
