@@ -51,28 +51,30 @@ export function ListaCriaturas() {
         titulo="Pawnee Creature Tracker"
         subtitulo="Registra, clasifica y sigue a cada criatura que ronda los bosques de Pawnee. Cada avistamiento deja una huella."
         pie={
-          <dl className="grid max-w-2xl grid-cols-3 gap-4">
-            {[
-              ["Criaturas listadas", criaturas.length],
-              ["Con estado activo", totalActivas],
-              ["Peligro máximo", peligroMaximo],
-            ].map(([etiqueta, valor]) => (
-              <div key={etiqueta} className="vidrio rounded-2xl px-4 py-4 md:px-6">
-                <dd className="font-display text-4xl font-black text-emerald-300 md:text-5xl">
-                  <Contador valor={Number(valor)} />
-                </dd>
-                <dt className="mt-1 text-xs text-stone-400">{etiqueta}</dt>
-              </div>
-            ))}
-          </dl>
+          <div className="flex flex-col items-start gap-8">
+            <dl className="grid w-full max-w-2xl grid-cols-3 gap-4">
+              {[
+                ["Criaturas listadas", criaturas.length],
+                ["Con estado activo", totalActivas],
+                ["Peligro máximo", peligroMaximo],
+              ].map(([etiqueta, valor]) => (
+                <div key={etiqueta} className="vidrio rounded-2xl px-4 py-4 md:px-6">
+                  <dd className="font-display text-4xl font-black text-emerald-300 md:text-5xl">
+                    <Contador valor={Number(valor)} />
+                  </dd>
+                  <dt className="mt-1 text-xs text-stone-400">{etiqueta}</dt>
+                </div>
+              ))}
+            </dl>
+            <Link to="/criaturas/nueva" className="btn-cobre">
+              Registrar criatura
+            </Link>
+          </div>
         }
       >
         <a data-accion href="#criaturas" className="btn-menta">
           Explorar criaturas
         </a>
-        <Link data-accion to="/criaturas/nueva" className="btn-cobre">
-          Registrar criatura
-        </Link>
         <Link data-accion to="/avistamientos" className="btn-contorno">
           Ver avistamientos
         </Link>

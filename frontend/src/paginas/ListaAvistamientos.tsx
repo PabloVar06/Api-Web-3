@@ -56,25 +56,27 @@ export function ListaAvistamientos() {
         titulo="Avistamientos registrados"
         subtitulo="Cada testigo, cada lugar, cada fecha: el rastro de las criaturas de Pawnee."
         pie={
-          <dl className="grid max-w-2xl grid-cols-3 gap-4">
-            {[
-              ["Avistamientos", avistamientos.length],
-              ["Criaturas distintas", criaturasDistintas],
-              ["Lugares", lugaresDistintos],
-            ].map(([etiqueta, valor]) => (
-              <div key={etiqueta} className="vidrio rounded-2xl px-4 py-4 md:px-6">
-                <dd className="font-display text-4xl font-black text-emerald-300 md:text-5xl">
-                  <Contador valor={Number(valor)} />
-                </dd>
-                <dt className="mt-1 text-xs text-stone-400">{etiqueta}</dt>
-              </div>
-            ))}
-          </dl>
+          <div className="flex flex-col items-start gap-8">
+            <dl className="grid w-full max-w-2xl grid-cols-3 gap-4">
+              {[
+                ["Avistamientos", avistamientos.length],
+                ["Criaturas distintas", criaturasDistintas],
+                ["Lugares", lugaresDistintos],
+              ].map(([etiqueta, valor]) => (
+                <div key={etiqueta} className="vidrio rounded-2xl px-4 py-4 md:px-6">
+                  <dd className="font-display text-4xl font-black text-emerald-300 md:text-5xl">
+                    <Contador valor={Number(valor)} />
+                  </dd>
+                  <dt className="mt-1 text-xs text-stone-400">{etiqueta}</dt>
+                </div>
+              ))}
+            </dl>
+            <Link to="/avistamientos/nuevo" className="btn-cobre">
+              Registrar avistamiento
+            </Link>
+          </div>
         }
       >
-        <Link data-accion to="/avistamientos/nuevo" className="btn-cobre">
-          Registrar avistamiento
-        </Link>
         <Link data-accion to="/" className="btn-contorno">
           Volver a criaturas
         </Link>

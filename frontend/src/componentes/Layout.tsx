@@ -96,9 +96,6 @@ export function Layout({ children }: { children: ReactNode }) {
               </NavLink>
             ))}
             {formulario}
-            <Link to="/criaturas/nueva" className="btn-cobre !px-5 !py-2.5">
-              Registrar criatura
-            </Link>
           </div>
 
           <button
@@ -123,9 +120,6 @@ export function Layout({ children }: { children: ReactNode }) {
               </NavLink>
             ))}
             {formulario}
-            <Link to="/criaturas/nueva" className="btn-cobre">
-              Registrar criatura
-            </Link>
           </div>
         )}
       </nav>
