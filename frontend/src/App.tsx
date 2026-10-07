@@ -10,18 +10,21 @@ import { DetalleCriatura } from "./paginas/DetalleCriatura";
 import { FormularioCriatura } from "./paginas/FormularioCriatura";
 import { ListaAvistamientos } from "./paginas/ListaAvistamientos";
 import { FormularioAvistamiento } from "./paginas/FormularioAvistamiento";
+import { Layout } from "./componentes/Layout";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<ListaCriaturas />} />
-        <Route path="/criaturas/nueva" element={<FormularioCriatura />} />
-        <Route path="/criaturas/:id" element={<DetalleCriatura />} />
-        <Route path="/criaturas/:id/editar" element={<FormularioCriatura />} />
-        <Route path="/avistamientos" element={<ListaAvistamientos />} />
-        <Route path="/avistamientos/nuevo" element={<FormularioAvistamiento />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<ListaCriaturas />} />
+          <Route path="/criaturas/nueva" element={<FormularioCriatura />} />
+          <Route path="/criaturas/:id" element={<DetalleCriatura />} />
+          <Route path="/criaturas/:id/editar" element={<FormularioCriatura />} />
+          <Route path="/avistamientos" element={<ListaAvistamientos />} />
+          <Route path="/avistamientos/nuevo" element={<FormularioAvistamiento />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 }

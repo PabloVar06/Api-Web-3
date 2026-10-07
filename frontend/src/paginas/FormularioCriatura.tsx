@@ -5,9 +5,13 @@
  */
 
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { crearCriatura, actualizarCriatura, obtenerCriaturaPorId } from "../api/criaturasApi";
 import { CriaturaFormulario, TIPOS_CRIATURA, ESTADOS_INVESTIGACION } from "../tipos";
+import { Hero } from "../componentes/Hero";
+import { MedidorPeligro } from "../componentes/Insignias";
+import { Cargando, MensajeError, PantallaCentrada } from "../componentes/Estados";
+import { ETIQUETA_ESTADO, ETIQUETA_TIPO } from "../componentes/etiquetas";
 
 const FORM_VACIO: CriaturaFormulario = {
   nombre: "",
@@ -78,88 +82,119 @@ export function FormularioCriatura() {
     }
   }
 
-  if (cargando) return <p>Cargando datos de la criatura...</p>;
+  if (cargando)
+    return (
+      <PantallaCentrada>
+        <Cargando texto="Cargando datos de la criatura" />
+      </PantallaCentrada>
+    );
 
   return (
     <div>
-      <h1>{esEdicion ? "Editar criatura" : "Registrar criatura nueva"}</h1>
+      <Hero mini palabraFondo={esEdicion ? "Editar" : "Nueva"} sobretitulo="Ficha de criatura" titulo={esEdicion ? "Editar criatura" : "Registrar criatura nueva"} />
 
-      {error && <p>Error: {error}</p>}
+      <section className="relative z-10 mx-auto -mt-16 max-w-2xl px-6 pb-28">
+        <div className="vidrio rounded-3xl p-8 shadow-2xl md:p-10">
+          {error && (
+            <div className="mb-8">
+              <MensajeError texto={error} />
+            </div>
+          )}
 
-      <form onSubmit={manejarEnvio}>
-        <p>
-          <label htmlFor="nombre">Nombre: </label>
-          <br />
-          <input
-            id="nombre"
-            type="text"
-            value={form.nombre}
-            onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-          />
-        </p>
+          <form onSubmit={manejarEnvio} className="space-y-7">
+            <div>
+              <label htmlFor="nombre" className="etiqueta-campo">
+                Nombre
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                className="campo"
+                value={form.nombre}
+                onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+              />
+            </div>
 
-        <p>
-          <label htmlFor="tipo">Tipo: </label>
-          <br />
-          <select
-            id="tipo"
-            value={form.tipo}
-            onChange={(e) => setForm({ ...form, tipo: e.target.value as CriaturaFormulario["tipo"] })}
-          >
-            {TIPOS_CRIATURA.map((tipo) => (
-              <option key={tipo} value={tipo}>
-                {tipo}
-              </option>
-            ))}
-          </select>
-        </p>
+            <div className="grid gap-7 sm:grid-cols-2">
+              <div>
+                <label htmlFor="tipo" className="etiqueta-campo">
+                  Tipo
+                </label>
+                <select
+                  id="tipo"
+                  className="campo"
+                  value={form.tipo}
+                  onChange={(e) => setForm({ ...form, tipo: e.target.value as CriaturaFormulario["tipo"] })}
+                >
+                  {TIPOS_CRIATURA.map((tipo) => (
+                    <option key={tipo} value={tipo}>
+                      {ETIQUETA_TIPO[tipo]}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-        <p>
-          <label htmlFor="habilidades">Habilidades (separadas por comas): </label>
-          <br />
-          <input
-            id="habilidades"
-            type="text"
-            value={habilidadesTexto}
-            onChange={(e) => setHabilidadesTexto(e.target.value)}
-          />
-        </p>
+              <div>
+                <label htmlFor="estado" className="etiqueta-campo">
+                  Estado
+                </label>
+                <select
+                  id="estado"
+                  className="campo"
+                  value={form.estado}
+                  onChange={(e) => setForm({ ...form, estado: e.target.value as CriaturaFormulario["estado"] })}
+                >
+                  {ESTADOS_INVESTIGACION.map((estado) => (
+                    <option key={estado} value={estado}>
+                      {ETIQUETA_ESTADO[estado]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-        <p>
-          <label htmlFor="nivelPeligro">Nivel de peligro (1-10): </label>
-          <br />
-          <input
-            id="nivelPeligro"
-            type="number"
-            min={1}
-            max={10}
-            value={form.nivelPeligro}
-            onChange={(e) => setForm({ ...form, nivelPeligro: Number(e.target.value) })}
-          />
-        </p>
+            <div>
+              <label htmlFor="habilidades" className="etiqueta-campo">
+                Habilidades (separadas por comas)
+              </label>
+              <input
+                id="habilidades"
+                type="text"
+                className="campo"
+                value={habilidadesTexto}
+                onChange={(e) => setHabilidadesTexto(e.target.value)}
+              />
+            </div>
 
-        <p>
-          <label htmlFor="estado">Estado: </label>
-          <br />
-          <select
-            id="estado"
-            value={form.estado}
-            onChange={(e) => setForm({ ...form, estado: e.target.value as CriaturaFormulario["estado"] })}
-          >
-            {ESTADOS_INVESTIGACION.map((estado) => (
-              <option key={estado} value={estado}>
-                {estado}
-              </option>
-            ))}
-          </select>
-        </p>
+            <div>
+              <label htmlFor="nivelPeligro" className="etiqueta-campo">
+                Nivel de peligro (1-10)
+              </label>
+              <input
+                id="nivelPeligro"
+                type="number"
+                min={1}
+                max={10}
+                className="campo"
+                value={form.nivelPeligro}
+                onChange={(e) => setForm({ ...form, nivelPeligro: Number(e.target.value) })}
+              />
+              <div className="mt-3">
+                <MedidorPeligro nivel={Math.min(10, Math.max(0, form.nivelPeligro || 0))} />
+              </div>
+            </div>
 
-        <p>
-          <button type="submit" disabled={guardando}>
-            {guardando ? "Guardando..." : esEdicion ? "Guardar cambios" : "Crear criatura"}
-          </button>
-        </p>
-      </form>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <button type="submit" disabled={guardando} className="btn-cobre">
+                {guardando ? "Guardando..." : esEdicion ? "Guardar cambios" : "Crear criatura"}
+              </button>
+              <Link to={esEdicion && id ? `/criaturas/${id}` : "/"} className="btn-contorno">
+                Cancelar
+              </Link>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
